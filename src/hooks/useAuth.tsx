@@ -1,3 +1,4 @@
+'use client'
 import { createContext, useContext, useEffect, useState, ReactNode } from "react";
 import { apiClient } from "@/integrations/api/client";
 
@@ -61,6 +62,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const token = apiClient.getToken();
     if (token) {
+      // Re-write token via setToken so the auth_token cookie is mirrored.
+      // Without this, the Edge middleware never sees the cookie on subsequent
+      // visits (getToken only reads localStorage, never writes the cookie).
+      apiClient.setToken(token);
       // Restore user from token — validate with server on next action
       setUser({ id: 'pending', email: '', roles: ['admin'] });
       setIsAdmin(true);

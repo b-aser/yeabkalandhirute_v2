@@ -6,6 +6,8 @@ class ApiClient {
   setToken(token: string) {
     this.token = token;
     localStorage.setItem('auth_token', token);
+    // Mirror into a cookie so the Edge middleware can read it.
+    document.cookie = `auth_token=${encodeURIComponent(token)}; path=/; SameSite=Strict; max-age=604800`;
   }
 
   getToken(): string | null {
@@ -18,6 +20,8 @@ class ApiClient {
   clearToken() {
     this.token = null;
     localStorage.removeItem('auth_token');
+    // Clear the middleware cookie as well.
+    document.cookie = 'auth_token=; path=/; SameSite=Strict; max-age=0';
   }
 
   private async request<T>(endpoint: string, options: RequestInit = {}): Promise<T> {

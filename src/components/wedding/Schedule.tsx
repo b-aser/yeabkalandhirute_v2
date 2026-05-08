@@ -29,7 +29,16 @@ const createCustomIcon = (IconComponent: any) => {
 
 export const Schedule = ({ events }: { events?: any[] }) => {
   const [mounted, setMounted] = useState(false);
-  useEffect(() => { setMounted(true); }, []);
+  const [mapKey, setMapKey] = useState(0);
+
+  useEffect(() => {
+    // Increment key on every mount so React always creates a fresh DOM node
+    // for Leaflet. This prevents the "Map container is being reused" error
+    // caused by React StrictMode's double-invoke leaving a stale _leaflet_id.
+    setMapKey(k => k + 1);
+    setMounted(true);
+    return () => setMounted(false);
+  }, []);
 
   const displaySchedule = (events && events.length > 0)
     ? events.map(item => ({

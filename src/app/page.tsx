@@ -24,12 +24,12 @@ import { RSVP } from "@/components/wedding/RSVP";
 import { Footer } from "@/components/wedding/Footer";
 
 
-const Home = () => {
+const Home = ({ previewData }: { previewData?: any }) => {
   const { data: dbSettings, isLoading } = useWeddingSettings();
   const { data: timeline = [] } = useTimeline();
   const { data: gallery = [] } = useGallery();
   const { data: scheduleEvents = [] } = useSchedule();
-  const settings = dbSettings;
+  const settings = previewData || dbSettings;
   const [showSuspense, setShowSuspense] = useState(true);
 
   useEffect(() => {
@@ -88,7 +88,7 @@ const Home = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowSuspense(false);
-    }, 1800);
+    }, 600);
     return () => clearTimeout(timer);
   }, []);
 
