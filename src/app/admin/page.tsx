@@ -11,8 +11,9 @@ import { Eye } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import Home from '../page'
+import OrganizerDashboard from './organise/page'
 
-type Tab = "content" | "timeline" | "gallery" | "schedule" | "rsvps" | "roles" | "preview";
+type Tab = "content" | "timeline" | "gallery" | "schedule" | "rsvps" | "roles" | "preview" | "organise";
 
 const Admin = () => {
   const { isAdmin } = useAuth();
@@ -48,12 +49,12 @@ const Admin = () => {
       </Helmet>
 
       {/* Tab navigation */}
-      <nav className="px-6 md:px-10 py-4 flex gap-6 border-b border-blush/60 overflow-x-auto bg-white/20">
-        {(["content", "timeline", "gallery", "schedule", "rsvps", "roles", "preview"] as Tab[]).map((t) => (
+      <nav className=" justify-center px-6 md:px-10 py-4 flex gap-6 border-b border-blush/60 overflow-x-auto bg-white/20 font-medium">
+        {(["content", "timeline", "gallery", "schedule", "rsvps", "roles", "preview", "organise"] as Tab[]).map((t) => (
           <button
             key={t}
             onClick={() => setTab(t)}
-            className={`text-[11px] tracking-[0.3em] uppercase pb-1 border-b-2 transition-colors whitespace-nowrap ${
+            className={`text-[11px] tracking-[0.3em] uppercase pb-1 border-b-2 transition-colors whitespace-nowrap  ${
               tab === t
                 ? "border-gold text-warm-dark"
                 : "border-transparent text-warm-soft hover:text-warm-dark"
@@ -85,6 +86,7 @@ const Admin = () => {
         {tab === "schedule" && <ScheduleEditor />}
         {tab === "rsvps" && <RsvpList />}
         {tab === "roles" && <RoleManagement />}
+        {tab === "organise" && <OrganizerDashboard />}
         {tab === "preview" && (
           <div className="border-[10px] border-warm-dark/5 rounded-xl overflow-hidden shadow-2xl bg-cream">
             <div className="bg-warm-dark text-cream px-4 py-2 text-[10px] tracking-[0.2em] uppercase flex justify-between items-center">
